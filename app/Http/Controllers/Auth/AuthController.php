@@ -16,20 +16,23 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required','email'],
-            'password' => ['required'],
+            'name' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ]);
 
-       if (Auth::attempt($credentials)) {
-    $request->session()->regenerate();
+        // Dùng 'name' thay vì 'email'
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-    $user = Auth::user();
-    if($user->role === 'quanly') return redirect()->route('admin.dashboard');
-    else return redirect()->route('user.dashboard');
-}
+            $user = Auth::user();
+            if ($user->role === 'quanly') {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('user.dashboard');
+            }
+        }
 
-
-        return back()->withErrors(['email' => 'Email hoặc mật khẩu không đúng.'])->onlyInput('email');
+        return back()->withErrors(['name' => 'Tên hoặc mật khẩu không đúng.'])->onlyInput('name');
     }
 
     public function logout(Request $request)

@@ -20,8 +20,8 @@ class AdminAttendanceController extends Controller
 
         // Lấy tất cả lịch + chấm công của ngày đó
         $schedules = Schedule::with('shift', 'attendances')
-                    ->where('date', $date)
-                    ->get();
+            ->where('date', $date)
+            ->get();
 
         return view('admin.attendance.index', compact('employees', 'schedules', 'date'));
     }
@@ -68,13 +68,35 @@ class AdminAttendanceController extends Controller
 
         return back()->with('success', '✅ Đã chấm công cho nhân viên.');
     }
+    public function deleteAttendance(Request $request)
+    {
+        $attendance = Attendance::find($request->attendance_id);
 
+        if ($attendance) {
+            $attendance->delete();
+            return back()->with('success', '❌ Chấm công đã được xóa.');
+        }
+
+        return back()->with('error', '⚠️ Không tìm thấy chấm công để xóa.');
+    }
+    // Thêm chức năng admin nhập tăng ca
+    public function addOvertime(Request $request)
+    {
+        $attendance = Attendance::findOrFail($request->attendance_id);
+
+        $attendance->update([
+            'overtime_hours' => $request->overtime_hours,
+            'overtime_status' => 'Đã duyệt', // admin nhập trực tiếp
+        ]);
+
+        return back()->with('success', "⏱️ Đã cập nhật {$request->overtime_hours} giờ tăng ca cho {$attendance->employee->name}");
+    }
     // Duyệt tăng ca
     public function approveOvertime(Request $request)
     {
         $attendance = Attendance::findOrFail($request->attendance_id);
 
-        if($attendance->overtime_hours && $attendance->overtime_status != 'Đã duyệt') {
+        if ($attendance->overtime_hours && $attendance->overtime_status != 'Đã duyệt') {
             $attendance->update([
                 'overtime_status' => 'Đã duyệt'
             ]);

@@ -106,22 +106,23 @@
 
                         <!-- Tab: Đổi mật khẩu -->
                         <div id="tab-password" style="display: none;">
-                            <form action="{{ route('profile.update') }}" method="POST">
-                                @csrf
-                                @method('PUT')
+                           <form action="{{ route('profile.update') }}" method="POST">
+    @csrf
+    @method('PUT')
 
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Mật khẩu mới</label>
-                                    <input type="password" name="password" id="password" class="form-control" placeholder="Để trống nếu không đổi">
-                                </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Mật khẩu mới</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Để trống nếu không đổi">
+    </div>
 
-                                <div class="mb-3">
-                                    <label for="password_confirmation" class="form-label">Xác nhận mật khẩu</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Để trống nếu không đổi">
-                                </div>
+    <div class="mb-3">
+        <label for="password_confirmation" class="form-label">Xác nhận mật khẩu</label>
+        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Để trống nếu không đổi">
+    </div>
 
-                                <button type="submit" class="btn btn-primary w-100">Đổi mật khẩu</button>
-                            </form>
+    <button type="submit" class="btn btn-primary w-100">Đổi mật khẩu</button>
+</form>
+
                         </div>
                     </div>
                 </div>

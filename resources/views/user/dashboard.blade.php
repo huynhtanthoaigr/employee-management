@@ -47,9 +47,9 @@
                     <div class="card-body d-flex align-items-center">
                         <i class="fas fa-clock fa-2x text-warning me-3"></i>
                         <div>
-                            <h5 class="card-title mb-1">Check-in / Check-out</h5>
-                            <p class="card-text mb-0">Quản lý giờ vào ra và điểm danh.</p>
-                            <a href="" class="btn btn-sm btn-outline-warning mt-2">Quản lý</a>
+                            <h5 class="card-title mb-1">Đăng ký lịch làm việc </h5>
+                            <p class="card-text mb-0">Quản lý lịch làm các lịch làm tuần tiếp theo</p>
+                            <a href="{{ route('user.schedule.requests') }}" class="btn btn-sm btn-outline-warning mt-2">Quản lý</a>
                         </div>
                     </div>
                 </div>

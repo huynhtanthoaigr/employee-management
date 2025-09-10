@@ -19,7 +19,7 @@ class AttendanceController extends Controller
             return back()->with('error', 'Ca làm không hợp lệ!');
 
         $shiftStart = Carbon::parse($schedule->date . ' ' . $schedule->shift->start_time);
-        $checkinWindowEnd = $shiftStart->copy()->addMinutes(10);
+        $checkinWindowEnd = $shiftStart->copy()->addMinutes(30);
 
         if ($now->between($shiftStart, $checkinWindowEnd)) {
             Attendance::updateOrCreate(
@@ -40,7 +40,7 @@ class AttendanceController extends Controller
         $now = Carbon::now();
 
         $shiftEnd = Carbon::parse($schedule->date . ' ' . $schedule->shift->end_time);
-        $checkoutWindowStart = $shiftEnd->copy()->subMinutes(10);
+        $checkoutWindowStart = $shiftEnd->copy()->subMinutes(30);
 
         if ($now->greaterThanOrEqualTo($checkoutWindowStart)) {
             $attendance->update(['check_out' => $now->format('H:i:s')]);

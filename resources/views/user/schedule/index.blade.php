@@ -49,11 +49,20 @@
                             {{-- Ca làm --}}
                             <td>
                                 @if($schedule)
-                                    <span class="badge bg-success">{{ $schedule->shift->name }}</span>
+                                    @if($schedule->request_status == 'full_day_off')
+                                        <span class="badge bg-danger">Nghỉ cả ngày</span>
+                                    @elseif($schedule->request_status == 'morning_off')
+                                            {{ $schedule->shift_name ?? 'Chưa phân ca' }}</span>
+                                    @elseif($schedule->request_status == 'afternoon_off')
+                                            {{ $schedule->shift_name ?? 'Chưa phân ca' }}</span>
+                                    @else
+                                        <span class="">{{ $schedule->shift_name ?? 'Chưa phân ca' }}</span>
+                                    @endif
                                 @else
-                                    <span class="badge bg-danger">Nghỉ</span>
+                                    <span class="badge bg-secondary">Chưa có lịch</span>
                                 @endif
                             </td>
+
 
                             {{-- Trạng thái chấm công --}}
                             <td>
@@ -63,7 +72,7 @@
                                     <form action="{{ route('user.attendance.checkin') }}" method="POST" class="mb-1">
                                         @csrf
                                         <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
-                                        <button class="btn btn-sm btn-success w-10">✅ Check-in</button>
+                                        <button class="btn btn-sm  w-10">✅ Check-in</button>
                                     </form>
                                 @elseif(!$attendance->check_out)
                                     <span class="text-warning d-block mb-1">⏳ Đợi Check-out</span>
@@ -81,7 +90,7 @@
                             <td>
                                 @if($attendance && $attendance->check_out)
                                     @if(!$attendance->overtime_hours)
-                                        <button class="btn btn-sm btn-info w-10" data-bs-toggle="modal" data-bs-target="#overtimeModal"
+                                        <button class="btn btn-sm  w-10" data-bs-toggle="modal" data-bs-target="#overtimeModal"
                                             data-schedule-id="{{ $schedule->id }}">
                                             ⏱️ Tăng ca
                                         </button>

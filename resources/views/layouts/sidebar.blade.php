@@ -24,15 +24,21 @@
                             <p>Dashboard</p>
                         </a>
                     @else
-                        <a href="{{ route('user.dashboard') }}">
-                            <i class="fas fa-home"></i>
-                            <p>Dashboard</p>
+                        <a href="{{ route('user.dashboard') }}" >
+                            <i class="fas fa-home"></i> <!-- Icon Home -->
+                            <span>Dashboard</span>
                         </a>
 
-                        <a href="{{ route('user.schedule') }}">
-                            <i class="fas fa-calendar-alt"></i>
-                            <p>Lịch làm việc</p>
+                        <a href="{{ route('user.schedule') }}" >
+                            <i class="fas fa-calendar-check"></i> <!-- Icon Lịch làm việc -->
+                            <span>Lịch làm việc</span>
                         </a>
+
+                        <a href="{{ route('user.schedule.requests') }}">
+                            <i class="fas fa-bed"></i> <!-- Icon Đăng ký nghỉ -->
+                            <span>Đăng ký lịch nghỉ</span>
+                        </a>
+
                     @endif
 
                 </li>

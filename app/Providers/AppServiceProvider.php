@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers;
-
+ use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,8 +18,14 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        //
-    }
+   
+
+public function boot()
+{
+    View::composer('layouts.app', function ($view) {
+        $notifications = Auth::check() ? Auth::user()->unreadNotifications : collect();
+        $view->with('notifications', $notifications);
+    });
+}
+
 }

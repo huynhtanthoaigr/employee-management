@@ -15,44 +15,46 @@ class ProfileController extends Controller
     }
 
     // Cập nhật thông tin
-    public function update(Request $request)
-    {
-        $user = $request->user();
+   public function update(Request $request)
+{
+    $user = $request->user();
 
-        // Validate input
+    // Nếu có password mới thì validate và đổi mật khẩu
+    if ($request->has('password') && $request->filled('password')) {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'gender' => 'nullable|in:male,female,other',
-            'password' => 'nullable|string|min:6|confirmed',
-            'avatar' => 'nullable|image|max:2048', // max 2MB
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // Cập nhật thông tin cơ bản
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->gender = $request->gender;
-
-        // Cập nhật mật khẩu nếu có
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
-        // Upload avatar nếu có
-        if ($request->hasFile('avatar')) {
-            // Xóa avatar cũ nếu tồn tại
-            if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
-                Storage::delete('public/' . $user->avatar);
-            }
-
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
-        }
-
+        $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Cập nhật thông tin thành công!');
+        return redirect()->route('profile.edit')->with('success', '✅ Mật khẩu đã được cập nhật!');
     }
+
+    // Validate thông tin cá nhân
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'phone' => 'nullable|string|max:20',
+        'gender' => 'nullable|in:male,female,other',
+        'avatar' => 'nullable|image|max:2048',
+    ]);
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->phone = $request->phone;
+    $user->gender = $request->gender;
+
+    if ($request->hasFile('avatar')) {
+        if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
+            Storage::delete('public/' . $user->avatar);
+        }
+        $user->avatar = $request->file('avatar')->store('avatars', 'public');
+    }
+
+    $user->save();
+
+    return redirect()->route('profile.edit')->with('success', '✅ Thông tin cá nhân đã được cập nhật!');
+}
+
 }
