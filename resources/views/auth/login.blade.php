@@ -122,6 +122,7 @@
                 <div class="modal-footer justify-content-center border-0">
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal">😂 Ok, tôi hiểu rồi</button>
                 </div>
+                
             </div>
         </div>
     </div>
